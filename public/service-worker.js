@@ -8,7 +8,6 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then( cache => {
       return cache.addAll([
         "/",
-        "./index.html",
         "./index.js",
         "./db.js",
         "./manifest.webmanifest",
@@ -23,23 +22,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// activate
-self.addEventListener("activate", function(evt) {
-  evt.waitUntil(
-    caches.keys().then(keyList => {
-      return Promise.all(
-        keyList.map(key => {
-          if (key !== CACHE_NAME && key !== DATA_CACHE_NAME) {
-            console.log("Removing old cache data", key);
-            return caches.delete(key);
-          }
-        })
-      );
-    })
-  );
 
-  self.clients.claim();
-});
 
 // fetch
 self.addEventListener("fetch", function(evt) {
